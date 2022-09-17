@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form onsubmit="saveToLocal(event)">
+        <label for="name">First Name</label>
+        <input type="text" id="name" name="firstname">
+        <label for="last">Last Name</label>
+        <input type="text" id="last" name="lastname">
+        <button>Submit</button>
+
+    </form>
+    <ul id="listOfUsers"></ul>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.27.2/axios.min.js"></script>
+   
+    <script type="text/javascript">
+        function saveToLocal(event){
+            event.preventDefault();
+            //console.log("first name")
+            var f=event.target.firstname.value
+            var l=event.target.lastname.value
+            //localStorage.setItem("first",f)
+            //localStorage.setItem("last",l)
+           // console.log(localStorage)
+            let obj={
+                f,
+                l
+            }
+
+            localStorage.setItem(obj.f,JSON.stringify(obj))
+           // console.log(localStorage)
+            showUserOnScreen(obj)
+        }
+        function showUserOnScreen(obj){
+            var parentNode=document.getElementById("listOfUsers");
+            //console.log(parentNode)
+            var childNode=`<li id="listToDelete">${obj.f}-${obj.l}<button onclick=deleteUser('${obj.f}')>Delete</button>
+                <button onclick=editUser('${obj.f}','${obj.l}','${obj.f}')>Edit</button></li>`
+            parentNode.innerHTML=parentNode.innerHTML+childNode
+
+            }
+            function deleteUser(user){
+               // console.log(user);
+                localStorage.removeItem(user);
+               // console.log(localStorage)
+               deleteUserFromscreen(user)
+            }
+              function deleteUserFromscreen(user){
+                var parentNode=document.getElementById("listOfUsers")
+               // console.log(parentNode)
+                var childNodeToBeDeleted=document.getElementById("listToDelete")
+               // console.log(childNodeToBeDeleted)
+                parentNode.removeChild(childNodeToBeDeleted)
+               }
+              function editUser(f,l,user){
+                 document.getElementById("name").value=f
+                 document.getElementById("last").value=l
+                
+                 deleteUser(user)
+               
+                  //document.getElementById("last").value=l;
+                 // deleteUser()
+
+              }
+            
+    </script>
+</body>
+</html>
